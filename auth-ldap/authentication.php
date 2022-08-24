@@ -154,6 +154,8 @@ class LDAPAuthentication {
 
         foreach ($this->getServers() as $s) {
             $params = $defaults + $s;
+            $parmas['binddn'] = $this->getConfig()->get('bind_dn'); 
+            $params['bindpw'] = Crypto::decrypt($this->getConfig()->get('bind_pw'), SECRET_SALT, $this->getConfig()->getNamespace());
             $c = new Net_LDAP2($params);
             $r = $c->bind();
             if (!PEAR::isError($r)) {
